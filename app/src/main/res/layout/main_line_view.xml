@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvRepositoryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_weight="1"
+        android:paddingLeft="16sp"
+        android:paddingTop="10sp"
+        android:textSize="14sp"
+        tools:text="Item 0"
+        />
+
+    <TextView
+        android:id="@+id/tvRepositoryLanguage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_below="@+id/tvRepositoryTitle"
+        android:paddingLeft="16sp"
+        android:paddingBottom="10sp"
+        android:textSize="10sp"
+        tools:text="Item 1"/>
+</android.widget.RelativeLayout>
