@@ -2,12 +2,14 @@ package gustavo.ferreira.gittest;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by Gustavo on 03/06/2018.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class User implements Serializable {
     private String login;
     private String name;
     private String avatar_url;

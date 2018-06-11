@@ -14,6 +14,8 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.xml.transform.Result;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,39 +23,65 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity{
 
     private EditText etUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         etUsername = ((EditText) findViewById(R.id.etUsername));
 
         findViewById(R.id.btSearch).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Call<List<Repos>> call = new RetrofitConfig().getReposService().searchRepos(etUsername.getText().toString());
-                final Toast successfulToast = Toast.makeText(getApplicationContext(), "Carregando...", Toast.LENGTH_LONG);
-                successfulToast.show();
-                call.enqueue(new Callback<List<Repos>>(){
-                    @Override
-                    public void onResponse(Call<List<Repos>> call, Response<List<Repos>> response) {
-                        if(response.code() == 200) {
-                            List<Repos> repos = response.body();
-                        }else if(response.code() == 404){
-                            successfulToast.setText("Usuário não encontrado!");
-                            successfulToast.show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Repos>> call, Throwable t) {
-                        Log.e("Error", t.getMessage());
-                        Toast.makeText(getApplicationContext(),"Houve um erro no request!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onClick(View v) {
+                searchUser(etUsername.getText().toString().trim());
             }
         });
 
+    }
 
+    private void searchUser(String username){
+        Call<User> request = new RetrofitConfig().getReposService().searchUser(username);
+
+        request.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.code() == 200){
+                    showRepositories(response.body());
+                }else{
+                    showToastRequestMessage(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                showToastRequestMessage(0);
+            }
+        });
+    }
+
+
+    private void showToastRequestMessage(int code){
+        String message;
+        switch(code){
+            case 404:{
+                message = "Usuário não encontrado.";
+                break;
+            }
+            default:{
+                message = "Houve um erro no request.";
+            }
+        }
+
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+    }
+
+
+
+    private void showRepositories(User user){
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra("USER", (Serializable)user);
+        startActivity(intent);
     }
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Repos implements Serializable {
+public class Repos{
     private String name;
     private String language;
 
