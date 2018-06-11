@@ -74,14 +74,14 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
 
 
     private void showRepositories(User user){
         Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("USER", (Serializable)user);
+        intent.putExtra("USER", user);
         startActivity(intent);
     }
 }

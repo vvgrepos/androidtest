@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:paddingLeft="16sp"
         android:paddingTop="10sp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         tools:text="Item 0"
         />
 
@@ -27,6 +27,7 @@
         android:layout_below="@+id/tvRepositoryTitle"
         android:paddingLeft="16sp"
         android:paddingBottom="10sp"
-        android:textSize="10sp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
         tools:text="Item 1"/>
 </android.widget.RelativeLayout>

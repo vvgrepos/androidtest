@@ -36,14 +36,11 @@ public class ResultActivity extends AppCompatActivity{
 
     }
 
-
-
     private void setUserInfo(User user){
         Picasso.get().load(user.getAvatar_url()).into((CircleImageView) findViewById(R.id.ivProfile));
         ((TextView) findViewById(R.id.tvUsername)).setText(user.getLogin());
         getUserRepos(user);
     }
-
 
     private void getUserRepos(User user){
         Call<List<Repos>> request = new RetrofitConfig().getReposService().searchRepos(user.getLogin());
