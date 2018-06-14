@@ -1,4 +1,4 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.data;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;

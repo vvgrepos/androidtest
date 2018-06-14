@@ -1,87 +1,84 @@
 package gustavo.ferreira.gittest;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.xml.transform.Result;
+import gustavo.ferreira.gittest.data.User;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class MainActivity extends AppCompatActivity implements UserContract.View{
 
-public class MainActivity extends AppCompatActivity{
-
-    private EditText etUsername;
+    private UserPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-        etUsername = ((EditText) findViewById(R.id.etUsername));
+        presenter = new UserPresenter(this);
 
         findViewById(R.id.btSearch).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchUser(etUsername.getText().toString().trim());
+                presenter.searchUser(((EditText)findViewById(R.id.etUsername)).getText().toString().trim());
             }
         });
 
-    }
-
-    private void searchUser(String username){
-        Call<User> request = new RetrofitConfig().getReposService().searchUser(username);
-
-        request.enqueue(new Callback<User>() {
+        findViewById(R.id.etUsername).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(response.code() == 200){
-                    showRepositories(response.body());
-                }else{
-                    showToastRequestMessage(response.code());
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    hideKeyboard(v);
                 }
             }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                showToastRequestMessage(0);
-            }
         });
     }
 
-
-    private void showToastRequestMessage(int code){
-        String message;
-        switch(code){
-            case 404:{
-                message = "Usuário não encontrado.";
-                break;
-            }
-            default:{
-                message = "Houve um erro no request.";
-            }
-        }
-
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        hideLoading();
     }
 
+    @Override
+    public void showLoading() {
+        findViewById(R.id.searchLayout).setVisibility(View.GONE);
+        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void hideLoading() {
+        findViewById(R.id.searchLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.progressBar).setVisibility(View.GONE);
+    }
 
-    private void showRepositories(User user){
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("USER", user);
-        startActivity(intent);
+    @Override
+    public void showError(int code) {
+        String error = getResources().getString(R.string.request_error);
+        if(code == 404){
+            error = getResources().getString(R.string.user_not_found);
+        }
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showDetail(User user) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("USER",(Serializable)user);
+        Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 1);
+    }
+
+    private void hideKeyboard(View view){
+        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
     }
 }

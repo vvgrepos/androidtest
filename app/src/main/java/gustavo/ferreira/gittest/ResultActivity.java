@@ -1,73 +1,94 @@
 package gustavo.ferreira.gittest;
 
-import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import gustavo.ferreira.gittest.data.Repos;
+import gustavo.ferreira.gittest.data.User;
+import gustavo.ferreira.gittest.util.LineAdapter;
 
-public class ResultActivity extends AppCompatActivity{
+public class ResultActivity extends AppCompatActivity implements ResultContract.View{
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private ResultPresenter mPresenter;
+    private User mUser;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_result);
-        setUserInfo((User)getIntent().getSerializableExtra("USER"));
 
-    }
+        Bundle bundle = getIntent().getExtras();
+        mUser = ((User)bundle.getSerializable("USER"));
 
-    private void setUserInfo(User user){
-        Picasso.get().load(user.getAvatar_url()).into((CircleImageView) findViewById(R.id.ivProfile));
-        ((TextView) findViewById(R.id.tvUsername)).setText(user.getLogin());
-        getUserRepos(user);
-    }
+        setUserInfo(mUser);
 
-    private void getUserRepos(User user){
-        Call<List<Repos>> request = new RetrofitConfig().getReposService().searchRepos(user.getLogin());
+        mPresenter = new ResultPresenter(this);
+        mPresenter.searchRepositories(mUser.getLogin());
 
-        request.enqueue(new Callback<List<Repos>>() {
+        ((Toolbar)findViewById(R.id.resultToolBar)).setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<List<Repos>> call, Response<List<Repos>> response) {
-                if(response.code() == 200){
-                    setUpRecycler(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Repos>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Erro!", Toast.LENGTH_LONG);
+            public void onClick(View v) {
+                backToPreviouslyActivity();
             }
         });
-
     }
 
-    private void setUpRecycler(List<Repos> reposList ){
+    @Override
+    public void hideLoading() {
+        findViewById(R.id.activityProgressBar).setVisibility(View.GONE);
+        findViewById(R.id.viewLayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.listProgressBar).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showRepositories(List<Repos> repositories) {
+        findViewById(R.id.listProgressBar).setVisibility(View.GONE);
         mRecyclerView = (RecyclerView) findViewById(R.id.rvRepositories);
+        mRecyclerView.setVisibility(View.VISIBLE);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new LineAdapter(reposList);
+        mAdapter = new LineAdapter(repositories);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
+
+    @Override
+    public void backToPreviouslyActivity() {
+        finish();
+    }
+
+    protected void setUserInfo(User user){
+        if(user != null){
+            Picasso.get().load(user.getAvatar_url()).into((CircleImageView) findViewById(R.id.ivProfile));
+            ((TextView) findViewById(R.id.tvUsername)).setText(user.getLogin());
+        }else{
+            mPresenter.onUserError();
+        }
+    }
+
+    @Override
+    public void finish(){
+        setResult(1);
+        super.finish();
+    }
+
+
 }

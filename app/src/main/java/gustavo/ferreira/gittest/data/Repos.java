@@ -1,4 +1,4 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.data;
 
 import android.graphics.Bitmap;
 

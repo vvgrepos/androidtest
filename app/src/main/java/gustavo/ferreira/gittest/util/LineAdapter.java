@@ -1,12 +1,13 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import gustavo.ferreira.gittest.R;
+import gustavo.ferreira.gittest.data.Repos;
 
 /**
  * Created by Gustavo on 02/06/2018.

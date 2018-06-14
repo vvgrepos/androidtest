@@ -4,12 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gustavo.ferreira.gittest.ResultActivity">
+    tools:context="gustavo.ferreira.gittest.ResultActivity"
+    >
+
+
+    <ProgressBar
+        android:id="@+id/activityProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/viewLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="invisible"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/resultToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/colorPrimaryDark"
+        app:title="Git Hub"
+        app:navigationIcon="?attr/homeAsUpIndicator">
+
+    </android.support.v7.widget.Toolbar>
+
     <android.support.constraint.ConstraintLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/userBar"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/resultToolBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/colorPrimaryDark"
@@ -21,7 +53,9 @@
             android:layout_marginTop="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:civ_border_color="@android:color/white"
+            />
         <TextView
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
@@ -45,6 +79,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userBar"
-        tools:listitem="@layout/main_line_view" />
+        tools:listitem="@layout/main_line_view"
+        android:visibility="gone"/>
 
+    <ProgressBar
+        android:id="@+id/listProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/rvRepositories"
+        app:layout_constraintBottom_toBottomOf="@id/rvRepositories"
+        app:layout_constraintLeft_toLeftOf="@id/rvRepositories"
+        app:layout_constraintRight_toRightOf="@id/rvRepositories"
+        android:visibility="invisible"
+        />
+
+
+</android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

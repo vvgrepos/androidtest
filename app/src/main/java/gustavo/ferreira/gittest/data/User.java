@@ -1,4 +1,4 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -44,4 +44,5 @@ public class User implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
 }

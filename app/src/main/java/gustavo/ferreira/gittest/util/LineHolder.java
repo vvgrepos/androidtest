@@ -1,8 +1,10 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import gustavo.ferreira.gittest.R;
 
 /**
  * Created by Gustavo on 02/06/2018.
