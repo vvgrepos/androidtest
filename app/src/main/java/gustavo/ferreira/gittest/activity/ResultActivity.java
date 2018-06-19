@@ -1,4 +1,4 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.activity;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -17,11 +17,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gustavo.ferreira.gittest.R;
+import gustavo.ferreira.gittest.contract.ResultContract;
+import gustavo.ferreira.gittest.presenter.ResultPresenter;
 import gustavo.ferreira.gittest.data.Repos;
 import gustavo.ferreira.gittest.data.User;
 import gustavo.ferreira.gittest.util.LineAdapter;
 
-public class ResultActivity extends AppCompatActivity implements ResultContract.View{
+public class ResultActivity extends AppCompatActivity implements ResultContract.View {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;

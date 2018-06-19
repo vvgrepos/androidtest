@@ -1,4 +1,4 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.contract;
 
 import gustavo.ferreira.gittest.data.User;
 

@@ -1,7 +1,8 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.presenter;
 
 import java.util.List;
 
+import gustavo.ferreira.gittest.contract.ResultContract;
 import gustavo.ferreira.gittest.data.Repos;
 import gustavo.ferreira.gittest.data.RetrofitConfig;
 import retrofit2.Call;

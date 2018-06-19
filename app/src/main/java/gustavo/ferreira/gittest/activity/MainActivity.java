@@ -1,4 +1,4 @@
-package gustavo.ferreira.gittest;
+package gustavo.ferreira.gittest.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,12 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 
+import gustavo.ferreira.gittest.R;
+import gustavo.ferreira.gittest.contract.UserContract;
+import gustavo.ferreira.gittest.presenter.UserPresenter;
 import gustavo.ferreira.gittest.data.User;
 
-public class MainActivity extends AppCompatActivity implements UserContract.View{
+public class MainActivity extends AppCompatActivity implements UserContract.View {
 
     private UserPresenter presenter;
 
